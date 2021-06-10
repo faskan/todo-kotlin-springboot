@@ -19,7 +19,7 @@ class TodoResourceIT {
     @Test
     fun `should return all todos`() {
         val responseEntity =
-            TestRestTemplate().getForEntity("http://localhost:" + port + "/api/todos", String::class.java)
+            TestRestTemplate().getForEntity(uri(), String::class.java)
         Assertions.assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
         JSONAssert.assertEquals(
             """[
@@ -33,4 +33,6 @@ class TodoResourceIT {
                           }
                         ]""", responseEntity.body, JSONCompareMode.STRICT)
     }
+
+    private fun uri() = "http://localhost:" + port + "/api/todos"
 }
