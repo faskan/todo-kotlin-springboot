@@ -9,6 +9,6 @@ class TodoResource {
     @GetMapping("/api/todos")
     fun getAllTodos(): List<Todo> {
         return listOf(Todo("todo1", "Todo1 Description"),
-        Todo("todo2", "Todo2 Description"));
+        Todo("todo2", "Todo2 Description"))
     }
 }
