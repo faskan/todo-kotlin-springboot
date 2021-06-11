@@ -16,7 +16,8 @@ class TodoResourceIT(@Autowired val testRestTemplate: TestRestTemplate,
 
     @Test
     fun `should return all todos`() {
-        val responseEntity = testRestTemplate.getForEntity("http://localhost:$port/api/todos", String::class.java)
+        val responseEntity = testRestTemplate.getForEntity(
+            "http://localhost:$port /api/todos", String::class.java)
         Assertions.assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
         JSONAssert.assertEquals(
             """[
