@@ -12,3 +12,4 @@ class TodoResource {
         Todo("todo2", "Todo2 Description"))
     }
 }
+data class Todo(val name: String, val description: String)
