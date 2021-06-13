@@ -1,15 +1,23 @@
 package com.faskan.todoksb.web
 
+import com.faskan.todoksb.model.Todo
+import com.faskan.todoksb.repo.TodoRepository
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
-class TodoResource {
+const val URL: String = "/api/todos"
 
-    @GetMapping("/api/todos")
+@RestController
+class TodoResource(val todoRepository: TodoRepository) {
+    @GetMapping(URL)
     fun getAllTodos(): List<Todo> {
-        return listOf(Todo("todo1", "Todo1 Description"),
-        Todo("todo2", "Todo2 Description"))
+        return todoRepository.findAll()
+    }
+
+    @PostMapping(URL)
+    fun createTodo(@RequestBody todo: Todo): Todo {
+        return todoRepository.save(todo)
     }
 }
-data class Todo(val name: String, val description: String)
