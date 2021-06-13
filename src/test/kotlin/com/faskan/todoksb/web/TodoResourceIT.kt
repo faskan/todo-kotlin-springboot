@@ -3,6 +3,8 @@ package com.faskan.todoksb.web
 import com.faskan.todoksb.model.Todo
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.skyscreamer.jsonassert.JSONAssert
+import org.skyscreamer.jsonassert.JSONCompareMode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -35,6 +37,19 @@ class TodoResourceIT(
         val responseEntity = testRestTemplate.postForEntity(uri(), request(), Todo::class.java)
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(responseEntity.body?.id?.length).isGreaterThan(0)
+
+        val todosResponse = testRestTemplate.getForEntity(
+            uri(), String::class.java
+        )
+        assertThat(todosResponse.statusCode).isEqualTo(HttpStatus.OK)
+        JSONAssert.assertEquals(
+            """[
+                          {
+                            "name" : "Deploy",
+                            "description" : "Deploy to prod"
+                          }
+                        ]""", todosResponse.body, JSONCompareMode.LENIENT
+        )
     }
 
     private fun request(): HttpEntity<String> {
