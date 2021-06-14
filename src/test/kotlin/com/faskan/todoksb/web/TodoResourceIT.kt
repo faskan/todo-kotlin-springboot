@@ -88,6 +88,7 @@ class TodoResourceIT(
         val responseEntity = testRestTemplate.postForEntity(uri(), request(), Todo::class.java)
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(responseEntity.body?.id?.length).isGreaterThan(0)
+        assertThat(responseEntity.body?.id).isNotNull
 
         val todosResponse = testRestTemplate.getForEntity(
             uri(), String::class.java
@@ -101,6 +102,19 @@ class TodoResourceIT(
                           }
                         ]""", todosResponse.body, JSONCompareMode.LENIENT
         )
+    }
+    private fun request(): HttpEntity<String> {
+        return HttpEntity(
+            """
+            {
+                "name" : "Deploy",
+                "description" : "Deploy to prod"
+            }
+            """.trimIndent(), headers()
+        )
+    }
+    private fun headers(): MultiValueMap<String, String>? {
+        return toMultiValueMap(mapOf(CONTENT_TYPE to listOf(APPLICATION_JSON.toString())))
     }
 
     @Test
@@ -135,20 +149,5 @@ class TodoResourceIT(
                 ]
                 """, todosResponse.body, JSONCompareMode.STRICT
         );
-    }
-
-    private fun request(): HttpEntity<String> {
-        return HttpEntity(
-            """
-            {
-                "name" : "Deploy",
-                "description" : "Deploy to prod"
-            }
-            """.trimIndent(), headers()
-        )
-    }
-
-    private fun headers(): MultiValueMap<String, String>? {
-        return toMultiValueMap(mapOf(CONTENT_TYPE to listOf(APPLICATION_JSON.toString())))
     }
 }
