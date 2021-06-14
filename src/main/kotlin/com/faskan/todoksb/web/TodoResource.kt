@@ -2,7 +2,9 @@ package com.faskan.todoksb.web
 
 import com.faskan.todoksb.model.Todo
 import com.faskan.todoksb.repo.TodoRepository
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 const val URL: String = "/api/todos"
@@ -14,8 +16,8 @@ class TodoResource(val todoRepository: TodoRepository) {
         return todoRepository.findAll()
     }
     @GetMapping("$URL/{id}")
-    fun getTodo(@PathVariable id: String): Optional<Todo> {
-        return todoRepository.findById(id)
+    fun getTodo(@PathVariable id: String): Todo {
+        return todoRepository.findById(id).orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
     }
 
     @PostMapping(URL)

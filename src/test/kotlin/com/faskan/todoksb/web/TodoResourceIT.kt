@@ -76,6 +76,14 @@ class TodoResourceIT(
     }
 
     @Test
+    fun `GET Todo should return 404 for an unknown id`() {
+        var todosResponse = testRestTemplate.getForEntity(
+            uri() + "/{id}", String::class.java, "someUnknownId"
+        );
+        assertThat(todosResponse.statusCode).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
     fun `should save the todo and return all todos on get`() {
         val responseEntity = testRestTemplate.postForEntity(uri(), request(), Todo::class.java)
         assertThat(responseEntity.statusCode).isEqualTo(HttpStatus.OK)
