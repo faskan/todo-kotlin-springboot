@@ -5,7 +5,6 @@ import com.faskan.todoksb.repo.TodoRepository
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
-import java.util.*
 
 const val URL: String = "/api/todos"
 
